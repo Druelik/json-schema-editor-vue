@@ -172,7 +172,7 @@ export default {
     },
     lang: { // i18n language
       type: String,
-      default: 'zh_CN'
+      default: 'en_US'
     }
   },
   computed: {
@@ -309,7 +309,7 @@ export default {
       }      
     },
     _joinName(){
-      return  `feild_${this.deep}_${this.countAdd++}`
+      return  `field_${this.deep}_${this.countAdd++}`
     },
     onSetting(){
       this.modalVisible = true
