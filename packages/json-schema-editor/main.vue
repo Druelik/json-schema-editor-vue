@@ -117,8 +117,9 @@
 <script>
 import { isNull } from './util'
 import {TYPE_NAME, TYPE} from './type/type'
+import Vue from 'vue';
 import { Row,Col,Button,Input,InputNumber, Icon,Checkbox,Select,Tooltip,Modal,Form,Switch} from 'ant-design-vue'
-
+Vue.use(Modal);
 import LocalProvider from './LocalProvider'
 export default {
   name:'JsonSchemaEditor',
