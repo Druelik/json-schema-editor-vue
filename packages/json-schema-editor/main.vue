@@ -3,7 +3,7 @@
     <div :style="{ marginLeft: `${20 * deep}px` }">
       <b-row align-v="center" class="mt-2">
         <b-col md="auto">
-          <a-button
+          <gl-button
             v-if="pickValue.type === 'object'"
             type="link"
             :icon="hidden ? 'chevron-lg-right' : 'chevron-lg-down'"
@@ -13,30 +13,31 @@
           <span v-else style="width: 32px; display: inline-block"></span>
         </b-col>
         <b-col md="auto">
-          <a-input
+          <gl-form-input
             :disabled="disabled || root"
             :value="pickKey"
             @blur="onInputName"
           />
         </b-col>
         <b-col md="auto">
-          <a-checkbox
+          <gl-form-checkbox
             v-if="root"
             :disabled="!isObject && !isArray"
             @change="onRootCheck"
           >
             {{ local["checked_all"] }}
-          </a-checkbox>
-          <a-checkbox
+          </gl-form-checkbox>
+          <gl-form-checkbox
             v-else
             :disabled="isItem"
             :checked="checked"
             @change="onCheck"
-            >{{ local["required"] }}</a-checkbox
           >
+            {{ local["required"] }}
+          </gl-form-checkbox>
         </b-col>
         <b-col md="auto">
-          <a-select
+          <b-form-select
             v-model="pickValue.type"
             :disabled="disabledType"
             @change="onChangeType"
@@ -46,23 +47,23 @@
               }
             "
           >
-            <a-select-option v-bind:value="t" :key="t" v-for="t in TYPE_NAME">
+            <b-form-select-option v-bind:value="t" :key="t" v-for="t in TYPE_NAME">
               {{ t }}
-            </a-select-option>
-          </a-select>
+            </b-form-select-option>
+          </b-form-select>
         </b-col>
         <b-col>
-          <a-input v-model="pickValue.title" :placeholder="local['title']" />
+          <gl-form-input v-model="pickValue.title" :placeholder="local['title']" />
         </b-col>
         <b-col md="auto">
-          <a-button
+          <gl-button
             type="link"
             icon="settings"
             class="setting-icon"
             @click="onSetting"
             category="tertiary"
           />
-          <a-button
+          <gl-button
             v-if="isObject"
             type="link"
             icon="plus"
@@ -70,14 +71,13 @@
             @click="addChild"
             category="tertiary"
           />
-          <a-button
-            v-if="!root && !isItem  "
+          <gl-button
+            v-if="!root && !isItem"
             type="link"
             @click="removeNode"
             icon="close"
             category="tertiary"
-          >
-          </a-button>
+          />
         </b-col>
       </b-row>
     </div>
@@ -107,7 +107,7 @@
         :custom="custom"
       />
     </template>
-    <a-modal
+    <gl-modal
       modal-id="adv_settings"
       v-model="modalVisible"
       :title="local['adv_setting']"
@@ -119,16 +119,16 @@
       dialogClass="json-schema-editor-advanced-modal"
     >
       <h3 v-text="local['base_setting']"></h3>
-      <a-form>
+      <gl-form>
         <b-row>
           <b-col md="auto" v-for="(item, key) in advancedValue" :key="key">
-            <a-input
+            <gl-form-input
               v-model="advancedValue[key]"
               v-if="advancedAttr[key].type === 'integer'"
               type="number"
               :placeholder="key"
             />
-            <a-input-number
+            <gl-form-input
               v-model="advancedValue[key]"
               v-else-if="advancedAttr[key].type === 'number'"
               :placeholder="key"
@@ -137,12 +137,9 @@
               v-else-if="advancedAttr[key].type === 'boolean'"
               style="display: inline-block; width: 100%"
             >
-              <a-switch
-                :label="local[key]"
-                v-model="advancedValue[key]"
-              ></a-switch>
+              <gl-toggle :label="local[key]" v-model="advancedValue[key]" />
             </span>
-            <a-select
+            <gl-form-select
               v-else-if="advancedAttr[key].type === 'array'"
               v-model="advancedValue[key]"
               :options="advancedAttr[key].enums"
@@ -152,9 +149,9 @@
                 }
               "
               :placeholder="local[key]"
-            >
-            </a-select>
-            <a-input
+            />
+
+            <gl-form-input
               v-model="advancedValue[key]"
               v-else
               style="width: 100%"
@@ -162,49 +159,45 @@
             />
           </b-col>
         </b-row>
-      </a-form>
+      </gl-form>
       <h3 v-text="local['add_custom']" v-show="custom"></h3>
-      <a-form>
+      <gl-form>
         <b-row>
           <b-col v-for="item in customProps" :key="item.key">
-            <a-input
-              v-model="item.value"
-              style="width: calc(100% - 30px)"
-            ></a-input>
-            <a-button
+            <gl-form-input v-model="item.value" style="width: calc(100% - 30px)" />
+            <gl-button
               icon="close"
               type="link"
               @click="customProps.splice(customProps.indexOf(item), 1)"
               style="width: 30px"
               category="tertiary"
-            ></a-button>
+            />
           </b-col>
           <b-col v-show="addProp.key != undefined">
-            <a-input slot="label" v-model="addProp.key" style="width: 100px" />
-            <a-input v-model="addProp.value" style="width: 100%" />
+            <gl-form-input slot="label" v-model="addProp.key" style="width: 100px" />
+            <gl-form-input v-model="addProp.value" style="width: 100%" />
           </b-col>
           <b-col>
-            <a-button
+            <gl-button
               icon="check"
               type="link"
               category="tertiary"
               @click="confirmAddCustomNode"
               v-if="customing"
-              
-            ></a-button>
-            <a-button
+            />
+            <gl-button
               icon="plus"
               @click="addCustomNode"
               :title="local['add_custom']"
               :hidden="customing"
               category="tertiary"
-            ></a-button>
+            />
           </b-col>
         </b-row>
-      </a-form>
+      </gl-form>
       <h3 v-text="local['preview']"></h3>
       <pre style="width: 100%">{{ completeNodeValue }}</pre>
-    </a-modal>
+    </gl-modal>
   </div>
 </template>
 <script>
@@ -231,17 +224,16 @@ import LocalProvider from "./LocalProvider";
 export default {
   name: "JsonSchemaEditor",
   components: {
-    BRow: BRow,
-    BCol: BCol,
-    AButton: GlButton,
-    AInput: GlFormInput,
-    AInputNumber: GlFormInput,
-    ACheckbox: GlFormCheckbox,
-    ASelect: BFormSelect,
-    ASelectOption: BFormSelectOption,
-    AModal: GlModal,
-    AForm: GlForm,
-    ASwitch: GlToggle,
+    BRow,
+    BCol,
+    GlButton,
+    GlFormInput,
+    GlFormCheckbox,
+    BFormSelect,
+    BFormSelectOption,
+    GlModal,
+    GlForm,
+    GlToggle,
   },
   props: {
     value: {

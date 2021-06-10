@@ -1,3 +1,11 @@
+<h1>
+README! 
+
+This is a fork and the ant-design was completly removed for gitlab-ui
+</h1>
+
+
+
 <h1 align="center">
   <a href="http://json-schema.sviip.com/" target="_blank">json-schema-editor-vue</a>
 </h1>
