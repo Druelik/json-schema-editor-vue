@@ -25,8 +25,8 @@
     "lib": "vue-cli-service build --target lib --name json-schema-editor-vue --dest lib packages/index.js"
   },
   "dependencies": {
-    "@gitlab/ui": "^29.33.0",
-    "bootstrap": "^4.5.3",
+    "@gitlab/ui": "^29.34.0",
+    "bootstrap": "4.5.3",
     "bootstrap-vue": "^2.18.1",
     "core-js": "^3.14.0",
     "vue": "^2.6.13"
