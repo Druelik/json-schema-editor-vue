@@ -48,7 +48,13 @@ export default {
   }
 }
 </script>
+
+<style src="@gitlab/ui/dist/index.css">
+</style>
+<style src="@gitlab/ui/dist/utility_classes.css">
+</style>
 <style>
+
 *{
   padding:0;
   margin:0;
@@ -65,7 +71,7 @@ export default {
   display: flex;
   padding:20px;
   width:80vw;
-  min-width:800px;
+  min-width:1600px;
   justify-content:center;
   height: calc(100vh - 150px);
   margin:auto;

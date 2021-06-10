@@ -23,9 +23,9 @@ const attr = {
         type:'string'
     },
     format: {
-        name:'格式',
+        name:'format',
         type:'array',
-        enums:['date','date-time','email','hostname','ipv4','ipv6','uri']
+        enums:['','date','date-time','email','hostname','ipv4','ipv6','uri']
     }
 }
 const wrapper = {value, attr}
