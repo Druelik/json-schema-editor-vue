@@ -1,52 +1,32 @@
 <template>
   <div id="app">
-    <div class="title">
-      Demo
-    </div>
+    <div class="title">Demo</div>
     <div class="container">
-      <pre>{{tree}}</pre>
-      <json-schema-editor class="schema" :value="tree" disabledType lang="en_US" custom/>
+      <pre>{{ tree }}</pre>
+      <json-schema-editor
+        class="schema"
+        :value="tree"
+        disabledType
+        lang="en_US"
+        custom
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
-      tree:
-      {
-  "root": {
-    "type": "object",
-    "title": "条件",
-    "properties": {
-      "name": {
-        "type": "string",
-        "title": "名称",
-        "maxLength": 10,
-        "minLength": 2
+      tree: {
+        root: {
+          type: "object",
+        },
       },
-      "appId": {
-        "type": "integer",
-        "title": "应用ID"
-      },
-      "credate": {
-        "type": "string",
-        "title": "创建日期",
-        "format": "date"
-      }
-    },
-    "required": [
-      "name",
-      "appId",
-      "credate"
-    ]
-  }
-}
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style src="@gitlab/ui/dist/index.css">
@@ -54,44 +34,43 @@ export default {
 <style src="@gitlab/ui/dist/utility_classes.css">
 </style>
 <style>
-
-*{
-  padding:0;
-  margin:0;
+* {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
-.title{
+.title {
   text-align: center;
   font-size: 40px;
   font-weight: bold;
-  height:100px;
+  height: 100px;
   line-height: 100px;
 }
-.container{
+.container {
   display: flex;
-  padding:20px;
-  width:80vw;
-  min-width:1600px;
-  justify-content:center;
+  padding: 20px;
+  width: 80vw;
+  min-width: 1600px;
+  justify-content: center;
   height: calc(100vh - 150px);
-  margin:auto;
+  margin: auto;
 }
-.container>pre {
+.container > pre {
   font-family: monospace;
   height: 100%;
   overflow-y: auto;
-  border:1px solid rgba(0,0,0,.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
-  width:50%
+  width: 50%;
 }
-.schema{
+.schema {
   margin-left: 20px;
-  width:50%;
+  width: 50%;
   height: 100%;
   overflow-y: auto;
-  overflow-x:hidden;
-  border:1px solid rgba(0,0,0,.1);
+  overflow-x: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
 }

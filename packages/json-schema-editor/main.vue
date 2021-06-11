@@ -47,13 +47,20 @@
               }
             "
           >
-            <b-form-select-option v-bind:value="t" :key="t" v-for="t in TYPE_NAME">
+            <b-form-select-option
+              v-bind:value="t"
+              :key="t"
+              v-for="t in TYPE_NAME"
+            >
               {{ t }}
             </b-form-select-option>
           </b-form-select>
         </b-col>
         <b-col>
-          <gl-form-input v-model="pickValue.title" :placeholder="local['title']" />
+          <gl-form-input
+            v-model="pickValue.title"
+            :placeholder="local['title']"
+          />
         </b-col>
         <b-col md="auto">
           <gl-button
@@ -114,14 +121,15 @@
       :maskClosable="false"
       :okText="local['ok']"
       :cancelText="local['cancel']"
-      width="1000px"
+      size="lg"
       @ok="handleOk"
       dialogClass="json-schema-editor-advanced-modal"
     >
       <h3 v-text="local['base_setting']"></h3>
       <gl-form>
         <b-row>
-          <b-col md="auto" v-for="(item, key) in advancedValue" :key="key">
+          <b-col md="4" class="mt-2" v-for="(item, key) in advancedValue" :key="key">
+            <span>{{ local[key] }}</span>
             <gl-form-input
               v-model="advancedValue[key]"
               v-if="advancedAttr[key].type === 'integer'"
@@ -137,7 +145,7 @@
               v-else-if="advancedAttr[key].type === 'boolean'"
               style="display: inline-block; width: 100%"
             >
-              <gl-toggle :label="local[key]" v-model="advancedValue[key]" />
+              <gl-toggle  v-model="advancedValue[key]" />
             </span>
             <gl-form-select
               v-else-if="advancedAttr[key].type === 'array'"
@@ -163,8 +171,12 @@
       <h3 v-text="local['add_custom']" v-show="custom"></h3>
       <gl-form>
         <b-row>
-          <b-col v-for="item in customProps" :key="item.key">
-            <gl-form-input v-model="item.value" style="width: calc(100% - 30px)" />
+          <b-col  xl="12" v-for="item in customProps" :key="item.key" style="display: flex;">
+            <label  style="align-self:end; width: 100px;">{{ item.key }} </label>
+            <gl-form-input
+              v-model="item.value"
+              style="width: calc(100% - 30px)"
+            />
             <gl-button
               icon="close"
               type="link"
@@ -173,8 +185,12 @@
               category="tertiary"
             />
           </b-col>
-          <b-col v-show="addProp.key != undefined">
-            <gl-form-input slot="label" v-model="addProp.key" style="width: 100px" />
+          <b-col xl="11" v-show="addProp.key != undefined" style="display: flex;">
+            <gl-form-input
+              v-if="customing"
+              v-model="addProp.key"
+              class="w-100 mr-2"
+            />
             <gl-form-input v-model="addProp.value" style="width: 100%" />
           </b-col>
           <b-col>
@@ -218,6 +234,7 @@ import {
   GlFormInput,
   GlFormCheckbox,
   GlModal,
+  GlFormSelect,
 } from "@gitlab/ui";
 
 import LocalProvider from "./LocalProvider";
@@ -234,6 +251,7 @@ export default {
     GlModal,
     GlForm,
     GlToggle,
+    GlFormSelect,
   },
   props: {
     value: {
