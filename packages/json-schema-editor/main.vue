@@ -1,11 +1,19 @@
 <template>
   <div class="json-schema-editor">
-    <div :style="{ marginLeft: `${20 * deep}px` }">
-      <b-row align-v="center" class="mt-2">
+    <div
+      :style="{
+        marginLeft: `${20 * deep}px`,
+        backgroundColor: `rgb(${color + deep * 8}, ${color + deep * 8}, ${
+          color + deep * 8
+        })`,
+      }"
+    >
+      <b-row align-v="center">
         <b-col md="auto">
           <gl-button
             v-if="pickValue.type === 'object'"
             type="link"
+            aria-label="Open/Close"
             :icon="hidden ? 'chevron-lg-right' : 'chevron-lg-down'"
             @click="hidden = !hidden"
             category="tertiary"
@@ -55,12 +63,6 @@
               {{ t }}
             </b-form-select-option>
           </b-form-select>
-        </b-col>
-        <b-col>
-          <gl-form-input
-            v-model="pickValue.title"
-            :placeholder="local['title']"
-          />
         </b-col>
         <b-col md="auto">
           <gl-button
@@ -128,7 +130,19 @@
       <h3 v-text="local['base_setting']"></h3>
       <gl-form>
         <b-row>
-          <b-col md="4" class="mt-2" v-for="(item, key) in advancedValue" :key="key">
+          <b-col md="4" class="mt-2">
+            <span>{{ local["title"] }}</span>
+            <gl-form-input
+              v-model="pickValue.title"
+              :placeholder="local['title']"
+            />
+          </b-col>
+          <b-col
+            md="4"
+            class="mt-2"
+            v-for="(item, key) in advancedValue"
+            :key="key"
+          >
             <span>{{ local[key] }}</span>
             <gl-form-input
               v-model="advancedValue[key]"
@@ -145,7 +159,7 @@
               v-else-if="advancedAttr[key].type === 'boolean'"
               style="display: inline-block; width: 100%"
             >
-              <gl-toggle  v-model="advancedValue[key]" />
+              <gl-toggle v-model="advancedValue[key]" />
             </span>
             <gl-form-select
               v-else-if="advancedAttr[key].type === 'array'"
@@ -171,8 +185,13 @@
       <h3 v-text="local['add_custom']" v-show="custom"></h3>
       <gl-form>
         <b-row>
-          <b-col  xl="12" v-for="item in customProps" :key="item.key" style="display: flex;">
-            <label  style="align-self:end; width: 100px;">{{ item.key }} </label>
+          <b-col
+            xl="12"
+            v-for="item in customProps"
+            :key="item.key"
+            style="display: flex"
+          >
+            <label style="align-self: end; width: 100px">{{ item.key }} </label>
             <gl-form-input
               v-model="item.value"
               style="width: calc(100% - 30px)"
@@ -185,7 +204,11 @@
               category="tertiary"
             />
           </b-col>
-          <b-col xl="11" v-show="addProp.key != undefined" style="display: flex;">
+          <b-col
+            xl="11"
+            v-show="addProp.key != undefined"
+            style="display: flex"
+          >
             <gl-form-input
               v-if="customing"
               v-model="addProp.key"
@@ -277,6 +300,10 @@ export default {
       // 节点深度，根节点deep=0
       type: Number,
       default: 0,
+    },
+    color: {
+      type: Number,
+      default: 169,
     },
     root: {
       //是否root节点
