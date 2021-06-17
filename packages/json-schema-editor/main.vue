@@ -9,42 +9,46 @@
       }"
     >
       <b-row align-v="center">
-        <b-col md="auto">
+        <b-col md="1">
           <gl-button
             v-if="pickValue.type === 'object'"
             type="link"
             aria-label="Open/Close"
-            :icon="hidden ? 'chevron-lg-right' : 'chevron-lg-down'"
             @click="hidden = !hidden"
             category="tertiary"
-          />
-          <span v-else style="width: 32px; display: inline-block"></span>
+            ><b-icon-chevron-right v-if="hidden" />
+            <b-icon-chevron-down v-else />
+          </gl-button>
         </b-col>
-        <b-col md="auto">
+        <b-col md="3">
           <gl-form-input
             :disabled="disabled || root"
             :value="pickKey"
             @blur="onInputName"
+            placeholder="Name"
           />
         </b-col>
-        <b-col md="auto">
-          <gl-form-checkbox
-            v-if="root"
-            :disabled="!isObject && !isArray"
-            @change="onRootCheck"
-          >
-            {{ local["checked_all"] }}
-          </gl-form-checkbox>
-          <gl-form-checkbox
-            v-else
-            :disabled="isItem"
-            :checked="checked"
-            @change="onCheck"
-          >
-            {{ local["required"] }}
-          </gl-form-checkbox>
+        <b-col md="2">
+          <gl-form-group>
+            <gl-form-checkbox
+              v-if="root"
+              :disabled="!isObject && !isArray"
+              @change="onRootCheck"
+              switch
+            >
+              {{ local["checked_all"] }}
+            </gl-form-checkbox>
+            <gl-form-checkbox
+              v-else
+              :disabled="isItem"
+              :checked="checked"
+              @change="onCheck"
+            >
+              {{ local["required"] }}
+            </gl-form-checkbox>
+          </gl-form-group>
         </b-col>
-        <b-col md="auto">
+        <b-col md="3">
           <b-form-select
             v-model="pickValue.type"
             :disabled="disabledType"
@@ -65,28 +69,33 @@
           </b-form-select>
         </b-col>
         <b-col md="auto">
-          <gl-button
-            type="link"
-            icon="settings"
-            class="setting-icon"
-            @click="onSetting"
-            category="tertiary"
-          />
-          <gl-button
-            v-if="isObject"
-            type="link"
-            icon="plus"
-            class="plus-icon"
-            @click="addChild"
-            category="tertiary"
-          />
-          <gl-button
-            v-if="!root && !isItem"
-            type="link"
-            @click="removeNode"
-            icon="close"
-            category="tertiary"
-          />
+          <div>
+            <gl-button
+              v-if="!root && !isItem"
+              type="link"
+              title="Remove Node"
+              @click="removeNode"
+              category="tertiary"
+              ><b-icon-x scale="1.5"
+            /></gl-button>
+            <gl-button
+              v-if="isObject"
+              type="link"
+              title="Add new Node"
+              class="plus-icon"
+              @click="addChild"
+              category="tertiary"
+              ><b-icon-plus scale="1.5"
+            /></gl-button>
+            <gl-button
+              title="Settings"
+              type="link"
+              class="setting-icon"
+              @click="onSetting"
+              category="tertiary"
+              ><b-icon-gear-fill scale="1"
+            /></gl-button>
+          </div>
         </b-col>
       </b-row>
     </div>
@@ -127,7 +136,7 @@
       @ok="handleOk"
       dialogClass="json-schema-editor-advanced-modal"
     >
-      <h3 v-text="local['base_setting']"></h3>
+      <!-- <h3 v-text="local['base_setting']"></h3> -->
       <gl-form>
         <b-row>
           <b-col md="4" class="mt-2">
@@ -182,7 +191,7 @@
           </b-col>
         </b-row>
       </gl-form>
-      <h3 v-text="local['add_custom']" v-show="custom"></h3>
+      <!-- <h3 v-text="local['add_custom']" v-show="custom"></h3>
       <gl-form>
         <b-row>
           <b-col
@@ -233,9 +242,16 @@
             />
           </b-col>
         </b-row>
-      </gl-form>
-      <h3 v-text="local['preview']"></h3>
-      <pre style="width: 100%">{{ completeNodeValue }}</pre>
+      </gl-form> -->
+      <div class="mt-3">
+        <gl-button v-gl-collapse-toggle.collapse-1 category="primary">
+          Show preview
+        </gl-button>
+        <gl-collapse id="collapse-1">
+          <h3 v-text="local['preview']"></h3>
+          <pre style="width: 100%">{{ completeNodeValue }}</pre>
+        </gl-collapse>
+      </div>
     </gl-modal>
   </div>
 </template>
@@ -244,12 +260,22 @@ import setConfigs from "@gitlab/ui/dist/config";
 
 setConfigs();
 
-import { BRow, BCol, BFormSelect, BFormSelectOption } from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+import {
+  BRow,
+  BCol,
+  BFormSelect,
+  BFormSelectOption,
+  VBToggle,
+  BIconPlus,
+  BIconGearFill,
+  BIconX,
+  BIconChevronDown,
+  BIconChevronRight,
+} from "bootstrap-vue";
 
 import { isNull } from "./util";
 import { TYPE_NAME, TYPE } from "./type/type";
+
 import {
   GlButton,
   GlForm,
@@ -258,11 +284,18 @@ import {
   GlFormCheckbox,
   GlModal,
   GlFormSelect,
+  GlCollapse,
 } from "@gitlab/ui";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import LocalProvider from "./LocalProvider";
 export default {
   name: "JsonSchemaEditor",
+  directives: {
+    "gl-collapse-toggle": VBToggle,
+  },
   components: {
     BRow,
     BCol,
@@ -273,8 +306,14 @@ export default {
     BFormSelectOption,
     GlModal,
     GlForm,
-    GlToggle,
     GlFormSelect,
+    GlCollapse,
+    GlToggle,
+    BIconPlus,
+    BIconGearFill,
+    BIconX,
+    BIconChevronDown,
+    BIconChevronRight,
   },
   props: {
     value: {
@@ -303,7 +342,7 @@ export default {
     },
     color: {
       type: Number,
-      default: 169,
+      default: 200,
     },
     root: {
       //是否root节点
@@ -370,6 +409,7 @@ export default {
   data() {
     return {
       TYPE_NAME,
+      preview: false,
       hidden: false,
       countAdd: 1,
       modalVisible: false,
@@ -453,7 +493,7 @@ export default {
     },
     addChild() {
       const name = this._joinName();
-      const type = "string";
+      const type = "text";
       const node = this.pickValue;
       node.properties || this.$set(node, "properties", {});
       const props = node.properties;
@@ -506,3 +546,7 @@ export default {
   },
 };
 </script>
+<style src="@gitlab/ui/dist/index.css">
+</style>
+<style src="@gitlab/ui/dist/utility_classes.css">
+</style>

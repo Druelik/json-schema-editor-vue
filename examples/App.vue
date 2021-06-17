@@ -29,16 +29,9 @@ export default {
 };
 </script>
 
-<style src="@gitlab/ui/dist/index.css">
-</style>
-<style src="@gitlab/ui/dist/utility_classes.css">
-</style>
+
 <style>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+
 .title {
   text-align: center;
   font-size: 40px;

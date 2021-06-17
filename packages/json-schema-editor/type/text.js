@@ -8,7 +8,7 @@ const value = {
 const attr = {
     description: {
       name: '描述',
-      type: 'string',
+      type: 'text',
     },
     maxLength:{
         name:'最大字符数',

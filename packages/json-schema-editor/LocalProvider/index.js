@@ -27,7 +27,7 @@ const langs = {
 		'maxItems': 'MaxItems',
 		'minProperties':'MinProperties',
 		'maxProperties': 'MaxProperties',
-		'checked_all': 'Check All',
+		'checked_all': 'Require All',
 		'valid_json': 'Not valid json',
 		'enum': 'Enum',
 		'enum_msg': 'One value per line',
