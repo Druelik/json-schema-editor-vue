@@ -2,14 +2,15 @@
   <div class="json-schema-editor">
     <div
       :style="{
-        marginLeft: `${20 * deep}px`,
-        backgroundColor: `rgb(${color + deep * 8}, ${color + deep * 8}, ${
-          color + deep * 8
+        
+        backgroundColor: `rgb(${color + deep * 0}, ${color + deep * 8}, ${
+          color + deep * 16
         })`,
       }"
     >
       <b-row align-v="center">
-        <b-col md="1">
+        <b-col  md="1">
+          <div class="float-md-center">
           <gl-button
             v-if="pickValue.type === 'object'"
             type="link"
@@ -19,7 +20,9 @@
             ><b-icon-chevron-right v-if="hidden" />
             <b-icon-chevron-down v-else />
           </gl-button>
+          </div>
         </b-col>
+
         <b-col md="3">
           <gl-form-input
             :disabled="disabled || root"
@@ -29,7 +32,7 @@
           />
         </b-col>
         <b-col md="2">
-          <gl-form-group>
+          <div class="float-md-left">
             <gl-form-checkbox
               v-if="root"
               :disabled="!isObject && !isArray"
@@ -46,18 +49,13 @@
             >
               {{ local["required"] }}
             </gl-form-checkbox>
-          </gl-form-group>
+          </div>
         </b-col>
         <b-col md="3">
           <b-form-select
             v-model="pickValue.type"
             :disabled="disabledType"
             @change="onChangeType"
-            :getPopupContainer="
-              (triggerNode) => {
-                return triggerNode.parentNode || document.body;
-              }
-            "
           >
             <b-form-select-option
               v-bind:value="t"
@@ -68,8 +66,8 @@
             </b-form-select-option>
           </b-form-select>
         </b-col>
-        <b-col md="auto">
-          <div>
+        <b-col md="3">
+          <div class="float-md-right">
             <gl-button
               v-if="!root && !isItem"
               type="link"
@@ -285,6 +283,7 @@ import {
   GlModal,
   GlFormSelect,
   GlCollapse,
+
 } from "@gitlab/ui";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -314,6 +313,7 @@ export default {
     BIconX,
     BIconChevronDown,
     BIconChevronRight,
+
   },
   props: {
     value: {
@@ -424,7 +424,11 @@ export default {
     onInputName(e) {
       const val = e.target.value;
       const p = {};
+      console.log(e.target);
+      console.log(this.parent.properties);
       for (let key in this.parent.properties) {
+        console.log(key);
+        console.log(this.parent.properties[key]);
         if (key != this.pickKey) {
           p[key] = this.parent.properties[key];
         } else {
@@ -444,6 +448,7 @@ export default {
       }
     },
     onChangeType() {
+      this.$delete(this.pickValue,"maximum");
       this.$delete(this.pickValue, "properties");
       this.$delete(this.pickValue, "items");
       this.$delete(this.pickValue, "required");
