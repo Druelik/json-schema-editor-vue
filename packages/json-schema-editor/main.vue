@@ -37,7 +37,7 @@
               v-if="root"
               :disabled="!isObject && !isArray"
               @change="onRootCheck"
-              switch
+              
             >
               {{ local["checked_all"] }}
             </gl-form-checkbox>
@@ -436,6 +436,7 @@ export default {
           delete this.parent.properties[key];
         }
       }
+      //DOuble things get deleted
       this.$set(this.parent, "properties", p);
       // 删掉无效的required
       const requireds = this.parent.required;
@@ -554,4 +555,10 @@ export default {
 <style src="@gitlab/ui/dist/index.css">
 </style>
 <style src="@gitlab/ui/dist/utility_classes.css">
+</style>
+<style scoped>
+.gl-form-checkbox, .gl-form-radio {
+  line-height: 0.85rem;
+  margin-top: 8px;
+}
 </style>
